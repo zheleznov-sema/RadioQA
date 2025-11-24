@@ -144,7 +144,7 @@ public class RadioTest {
     @Test
     public void shouldIncreaseVolumeInsideRange() {
         Radio radio = new Radio();
-        radio.increaseVolume(); // было 0 → станет 1
+        radio.increaseVolume();
 
         int expected = 1;
         int actual = radio.getCurrentVolume();
@@ -174,7 +174,7 @@ public class RadioTest {
         Radio radio = new Radio();
 
         radio.increaseVolume();
-        radio.reduseVolume();
+        radio.reduceVolume();
 
         int expected = 0;
         int actual = radio.getCurrentVolume();
@@ -186,11 +186,46 @@ public class RadioTest {
     public void shouldNotReduceVolumeBelowZero() {
         Radio radio = new Radio();
 
-        radio.reduseVolume();
+        radio.reduceVolume();
 
         int expected = 0;
         int actual = radio.getCurrentVolume();
 
         Assertions.assertEquals(expected, actual);
     }
+
+    @Test
+    public void shouldSetStationsCountConstructor(){
+        Radio radio = new Radio(30);
+        radio.setCurrentRadioStationNumber(29);
+
+        int exepted = 29;
+        int actual = radio.getCurrentRadioStationNumber();
+        Assertions.assertEquals(exepted, actual);
+    }
+
+    @Test
+    public void shouldWrapFromLastToZeroWithCustomCount() {
+        Radio radio = new Radio(30);
+        radio.setCurrentRadioStationNumber(29);
+
+        radio.next();
+
+        int expected = 0;
+        int actual = radio.getCurrentRadioStationNumber();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldHandleCountLessThanOne() {
+        Radio radio = new Radio(0);
+
+        int expected = 0;
+        int actual = radio.getCurrentRadioStationNumber();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+
 }
